@@ -69,7 +69,7 @@ where "Species" not ilike '%shark%'
 
 -- intermediate/advanced analysis questions
 
--- how has the 10-year rolling fatality rate changed (since 1800)?
+-- How has the 10-year rolling fatality rate changed (since 1800)?
 
 with decade_attack as (select *,
 ("Year"::INTEGER / 10)*10 as decade
@@ -98,7 +98,7 @@ from lagged
 where prev_decade_fatality_rate != 0
 and decade >=1800
 
--- have shark attacks become more geographically concentrated or more dispersed over time (since 1800)?
+-- Have shark attacks become more geographically concentrated or more dispersed over time (since 1800)?
 with decades as (
     select
         *,
@@ -139,7 +139,22 @@ group by decade
 order by countries_with_attacks desc;
 
 
---  next
+--  Which countries have experienced the largest increase in recorded attacks over the past 50 years?
 
-select * from gsaf_copy where "Type" ilike '%disaster%'
+with decades as (
+select *, ("Year"::INTEGER / 10) * 10 as decade
+from gsaf_copy
+),
 
+country_groups as (
+select "Country", decade, COUNT(*) as attacks
+from decades
+group by "Country", decade
+),
+
+lagged as (select *, lag(attacks, 5) over (partition by "Country" order by decade) as prev_50_years_attacks from country_groups)
+
+select "Country", coalesce(attacks - prev_50_years_attacks, 0) as fifty_year_change
+from lagged 
+where decade = 2020
+order by fifty_year_change desc
