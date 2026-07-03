@@ -25,7 +25,7 @@ rename "Species " to "Species";
 
 update %1$s
 set "Year" = 
-"Year"::INTEGER
+"Year"::INTEGER;
 
 
 update %1$s 
@@ -127,5 +127,3 @@ case
 $sql$, tbl);
 end;
 $$
-
-call update_gsaf('gsaf_copy'::regclass);

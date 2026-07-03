@@ -18,7 +18,7 @@ FROM gsaf_copy
 WHERE "Activity" IS NOT NULL
 GROUP BY "Activity"
 HAVING COUNT(*) >= 10
-ORDER BY attacks DESC;
+order by attacks desc;
 
 -- attacks and fatality rate by species
 select "Species",
@@ -31,7 +31,7 @@ FROM gsaf_copy
 WHERE "Species" IS NOT NULL
 GROUP BY "Species"
 HAVING COUNT(*) >= 10
-ORDER BY attacks DESC;
+order by attacks desc;
 
 -- attacks and fatality rate by country
 
@@ -46,6 +46,25 @@ group by "Country"
 having count(*) > 10
 order by attacks, fatality_rate desc;
 
+-- attacks and fatality rate by country, adjusting for population size
+select
+    "Country",
+    count(*) as attacks,
+    round(avg(population), 0) as avg_population,
+    round(count(*) * 1000000.0 / avg(population), 3) as attacks_per_million_people,
+    round(
+        avg(case when "Fatal Y/N" = 'Y' then 1.0 else 0 end) * 100,
+        1
+    ) as fatality_rate
+from population_merged_with_gsaf
+where "Country" is not null
+  and population is not null
+  and "Fatal Y/N" in ('Y', 'N')
+group by "Country"
+having count(*) > 10
+order by attacks_per_million_people desc, fatality_rate desc;
+
+
 -- attacks by rough time of day; misleading because more people in the water in afternoon
 
 select "Time", COUNT(*) as attacks
@@ -53,7 +72,7 @@ from gsaf_copy
 where "Time" = 'Morning' or "Time" = 'Afternoon' or "Time" = 'Evening' or "Time" = 'Night'
 group by "Time" 
 having COUNT(*)>10
-order by attacks
+order by attacks;
 
 -- attacks by hour of day
 
@@ -66,11 +85,11 @@ where "Time" ~ '^[0-9][0-9]:[0-9][0-9]'
 select EXTRACT(hour from "Time"::time) as hour, count(*) as attacks
 from formatted_times
 group by 1
-order by 2 desc
+order by 2 desc;
 
 -- intermediate/advanced analysis questions
 
--- How has the 10-year rolling fatality rate changed (since 1800)?
+-- How has the fatality rate changed by decade since 1800?
 
 with decade_attack as (select *,
 ("Year"::INTEGER / 10)*10 as decade
@@ -98,7 +117,7 @@ ROUND((avg_fatality_rate_decade - prev_decade_fatality_rate)/prev_decade_fatalit
 from lagged
 where prev_decade_fatality_rate != 0
 and decade >=1800
-order by decade desc
+order by decade desc;
 
 -- Have shark attacks become more geographically concentrated or more dispersed over time (since 1800)?
 with decades as (
@@ -160,7 +179,7 @@ select "Country", coalesce(attacks - prev_50_years_attacks, 0) as fifty_year_cha
 from lagged 
 where decade = 2020
 and attacks > prev_50_years_attacks
-order by fifty_year_change desc
+order by fifty_year_change desc;
 
 -- Which activities have experienced the greatest decline in fatality rate over the past century?
 
@@ -192,4 +211,63 @@ and century = 21
 order by change_in_fatality_rate asc;
 
 
+-- rolling 10-year average of fatality rate
+with fatality_rate_per_year AS(
+SELECT
+    "Year",
+    ROUND(
+        AVG(CASE WHEN "Fatal Y/N" = 'Y' THEN 1 ELSE 0 END) * 100,
+        1
+    ) AS fatality_rate
+FROM gsaf_copy
+WHERE nullif("Year"::TEXT, '') IS NOT NULL
+GROUP BY "Year"
+HAVING COUNT(*) >= 10
 
+)
+
+SELECT
+    "Year",
+    fatality_rate,
+    AVG(fatality_rate) OVER (
+        ORDER BY "Year"
+        ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
+    ) AS rolling_10yr_avg
+FROM fatality_rate_per_year
+order by "Year" desc
+
+-- Which countries have unusually high fatality rates given their attack volume?
+with overall_fatality as (
+
+select
+    avg(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as overall_fatality_rate
+from gsaf_copy
+where "Fatal Y/N" in ('Y', 'N')
+
+),
+
+country_stats as (
+
+select
+    "Country",
+    count(*) as attacks,
+    sum(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as fatal_attacks,
+    avg(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as fatality_rate
+from gsaf_copy
+where "Country" is not null
+and "Fatal Y/N" in ('Y', 'N')
+group by "Country"
+having count(*) >= 20
+
+)
+
+select
+    c."Country",
+    c.attacks,
+    c.fatal_attacks,
+    round(c.fatality_rate * 100, 1) as fatality_rate,
+    round((c.fatality_rate - o.overall_fatality_rate) * 100, 1) as percentage_points_above_overall
+from country_stats c
+cross join overall_fatality o
+where nullif("Country", '') is not null
+order by percentage_points_above_overall desc, attacks desc;
