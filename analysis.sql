@@ -1,9 +1,12 @@
+
+-- attacks and fatality rate by type of incident
 select type_quality_status,
-COUNT(*),
-AVG(case when "Fatal Y/N" = 'Y' then 1 else 0 end)*100.0 as avg_fatal
+COUNT(*) as attacks,
+ROUND(AVG(case when "Fatal Y/N" = 'Y' then 1 else 0 end)*100.0, 1) as fatality_rate
 from gsaf_copy
 group by type_quality_status;
 
+-- attacks and fatality rate by activity
 SELECT
     "Activity",
     COUNT(*) AS attacks,
@@ -17,7 +20,7 @@ GROUP BY "Activity"
 HAVING COUNT(*) >= 10
 ORDER BY attacks DESC;
 
-
+-- attacks and fatality rate by species
 select "Species",
 COUNT(*) as attacks,
  ROUND(
@@ -30,6 +33,8 @@ GROUP BY "Species"
 HAVING COUNT(*) >= 10
 ORDER BY attacks DESC;
 
+-- attacks and fatality rate by country
+
 select "Country", COUNT(*) as attacks,
 ROUND(
         AVG(CASE WHEN "Fatal Y/N" = 'Y' THEN 1 ELSE 0 END) * 100,
@@ -41,6 +46,7 @@ group by "Country"
 having count(*) > 10
 order by attacks, fatality_rate desc;
 
+-- attacks by rough time of day; misleading because more people in the water in afternoon
 
 select "Time", COUNT(*) as attacks
 from gsaf_copy
@@ -49,6 +55,7 @@ group by "Time"
 having COUNT(*)>10
 order by attacks
 
+-- attacks by hour of day
 
 with formatted_times as (
 select "Time" from gsaf_copy 
@@ -60,12 +67,6 @@ select EXTRACT(hour from "Time"::time) as hour, count(*) as attacks
 from formatted_times
 group by 1
 order by 2 desc
-
-select "Species" from gsaf_copy
-where "Species" not ilike '%shark%'
-
-
-
 
 -- intermediate/advanced analysis questions
 
@@ -93,10 +94,11 @@ from rolling_fatality_rate
 )
 
 select decade, ROUND(avg_fatality_rate_decade * 100.0, 4) as avg_fatality_rate_decade,
-ROUND((avg_fatality_rate_decade - prev_decade_fatality_rate)/prev_decade_fatality_rate, 4) * 100.0 as change_in_avg_fatality_rate
+ROUND((avg_fatality_rate_decade - prev_decade_fatality_rate)/prev_decade_fatality_rate, 4) * 100.0 as ten_year_change_in_avg_fatality_rate
 from lagged
 where prev_decade_fatality_rate != 0
 and decade >=1800
+order by decade desc
 
 -- Have shark attacks become more geographically concentrated or more dispersed over time (since 1800)?
 with decades as (
@@ -157,4 +159,37 @@ lagged as (select *, lag(attacks, 5) over (partition by "Country" order by decad
 select "Country", coalesce(attacks - prev_50_years_attacks, 0) as fifty_year_change
 from lagged 
 where decade = 2020
+and attacks > prev_50_years_attacks
 order by fifty_year_change desc
+
+-- Which activities have experienced the greatest decline in fatality rate over the past century?
+
+with centuries as (
+select *, ("Year"::INTEGER / 100) + 1 as century
+from gsaf_copy
+where "Fatal Y/N" in ('Y', 'N')
+),
+
+activities_grouped as (select 
+    activity_quality_status, century,
+    COUNT(*) as attacks,
+    ROUND(
+        AVG(case when "Fatal Y/N" = 'Y' then 1 else 0 end) * 100,
+        1
+    ) AS fatality_rate
+from centuries
+where nullif(activity_quality_status, '') is not null
+group by activity_quality_status, century
+having COUNT(*) >= 10),
+
+previous_century as (select *, lag(fatality_rate) over (partition by activity_quality_status order by century) as prev_century_fatality_rate
+from activities_grouped)
+
+select *, fatality_rate - prev_century_fatality_rate as change_in_fatality_rate
+from previous_century
+where fatality_rate < prev_century_fatality_rate
+and century = 21
+order by change_in_fatality_rate asc;
+
+
+

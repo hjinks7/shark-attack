@@ -265,6 +265,7 @@ update %1$s
 set "Species" = 
 case when "Species" ilike '%%questionable%%' or "Species" ilike '%%unidentified%%' or "Species" ilike '%%doubtful%%'
 or "Species" ilike '%%unknown%%' or "Species" ilike '%%undetermined%%' or "Species" ilike '%%not stated%%' or "Species" = ''
+or "Species" ilike '%%shark%%involvement%%not%%confirmed'
 then null
 else "Species"
 end;
@@ -288,7 +289,7 @@ when "Species" ilike '%%blue%%whaler%%'
 then 'Blue Shark'
 when "Species" ilike '%%whaler%%'
 then REPLACE("Species", 'whaler', 'whaler shark')
-when "Species" ilike '%%great%%white%%' or "Species" ilike '%%GWS%%'
+when "Species" ilike '%%great%%white%%' or "Species" ilike '%%GWS%%' or "Species" ilike '%%white%%'
 then 'Great White Shark'
 when "Species" ilike '%%wobbegong%%'
 then 'Wobbegong Shark'
