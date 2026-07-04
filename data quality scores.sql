@@ -8,7 +8,7 @@ as $$
 DECLARE total_rows NUMERIC;
 begin
 
-EXECUTE format ('SELECT COUNT(*) FROM %s', tbl)
+EXECUTE format ('SELECT COUNT(*) FROM %1$s', tbl)
 INTO total_rows;
 
 drop table if exists failures;
