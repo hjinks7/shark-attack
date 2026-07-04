@@ -47,22 +47,50 @@ having count(*) > 10
 order by attacks, fatality_rate desc;
 
 -- attacks and fatality rate by country, adjusting for population size
-select
+with decades as (
+    select 
+        "Country",
+        ("Year"::INTEGER / 10) * 10 as decade,
+        case when "Fatal Y/N" = 'Y' then 1.0 else 0.0 end as is_fatal
+    from gsaf_copy
+    where nullif("Country", '') is not null
+      and "Year" is not null
+      and "Fatal Y/N" in ('Y', 'N')
+),
+population_decades as (
+    select 
+        "Country",
+        (population_year::INTEGER / 10) * 10 as decade,
+        avg(population) as avg_population_for_decade
+    from population_merged_with_gsaf
+    where population is not null
+    group by 1, 2
+),
+normalized_metrics as (
+    select 
+        d."Country",
+        d.decade,
+        count(*) as attacks,
+        round(p.avg_population_for_decade, 0) as population_density,
+        -- Safely calculate metrics per million using NULLIF jic population data is missing
+        round(count(*) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million_people,
+        round(avg(d.is_fatal) * 100, 1) as fatality_rate
+    from decades d
+    join population_decades p 
+        on upper(trim(d."Country")) = upper(trim(p."Country")) 
+        and d.decade = p.decade
+    group by d."Country", d.decade, p.avg_population_for_decade
+)
+select 
     "Country",
-    count(*) as attacks,
-    round(avg(population), 0) as avg_population,
-    round(count(*) * 1000000.0 / avg(population), 3) as attacks_per_million_people,
-    round(
-        avg(case when "Fatal Y/N" = 'Y' then 1.0 else 0 end) * 100,
-        1
-    ) as fatality_rate
-from population_merged_with_gsaf
-where "Country" is not null
-  and population is not null
-  and "Fatal Y/N" in ('Y', 'N')
-group by "Country"
-having count(*) > 10
-order by attacks_per_million_people desc, fatality_rate desc;
+    decade,
+    attacks,
+    population_density,
+    attacks_per_million_people,
+    fatality_rate
+from normalized_metrics
+where attacks > 5 
+order by decade desc, attacks_per_million_people desc;
 
 
 -- attacks by rough time of day; misleading because more people in the water in afternoon
