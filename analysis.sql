@@ -81,7 +81,7 @@ population_decades as (
     where population is not null
     group by 1, 2
 ),
-normalized_metrics as (
+normalized_for_population as (
     select 
         d."Country",
         d.decade,
@@ -103,7 +103,7 @@ select
     population_density,
     attacks_per_million_people,
     fatality_rate
-from normalized_metrics
+from normalized_for_population
 where attacks > 5 
 order by decade desc, attacks_per_million_people desc;
 
