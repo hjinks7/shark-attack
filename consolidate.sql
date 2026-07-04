@@ -63,7 +63,7 @@ as $$
 begin
 execute format($sql$
 
-update %s
+update %1$s
 set "Date" = 
 case when ("Month"::INTEGER between 1 and 12) and ("Day"::INTEGER between 1 and 31)
 and "Year"::TEXT ~ '[0-9][0-9][0-9][0-9]'
@@ -209,7 +209,7 @@ begin
 	
 	execute format($sql$
 
-update %s
+update %1$s
 set "Fatal Y/N" = 
 case
             when nullif("Fatal Y/N", '') is null
