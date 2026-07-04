@@ -172,7 +172,6 @@ with decades as (
       and "Year" >= 1800
 ),
 population_decades as (
-    -- Group external population data into matching 10-year buckets
     select 
         "Country",
         (population_year::integer / 10) * 10 as decade,
@@ -186,7 +185,6 @@ country_decade_rates as (
         d.decade, 
         d."Country", 
         count(*) as attacks,
-        -- Calculate attacks per million for this specific country in this specific decade
         round(count(*) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million
     from decades d
     join population_decades p 
@@ -197,9 +195,7 @@ country_decade_rates as (
 ),
 ranked as (
     select *, 
-        -- Sum the total rates across all countries in that decade to establish a baseline denominator
         sum(attacks_per_million) over (partition by decade) as total_attacks_rate_pool, 
-        -- Rank countries by their population-adjusted risk rate instead of raw counts
         rank() over ( 
             partition by decade 
             order by attacks_per_million desc 
@@ -209,16 +205,14 @@ ranked as (
 select 
     decade, 
     count(*) as countries_with_tracked_rates, 
-    -- Share of the global per-capita risk held by the absolute highest-risk country
     round(max(case when country_rank = 1 then attacks_per_million * 100.0 / total_attacks_rate_pool end), 2) as top_1_country_share, 
-    -- Share of the global per-capita risk held by the top 3 highest-risk countries combined
     round(sum(case when country_rank <= 3 then attacks_per_million else 0 end) * 100.0 / max(total_attacks_rate_pool), 2) as top_3_country_share 
 from ranked 
 group by decade 
 order by decade desc;
 
 
---  Which countries have experienced the largest increase in recorded attacks over the past 50 years?
+--  Which countries have experienced the largest increase in recorded attacks over the past 50 years, adjusting for population?
 
 with country_year as ( 
     select "Country", decade 
