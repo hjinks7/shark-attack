@@ -210,7 +210,7 @@ where v.population is not null;
 
 create or replace view population_merged_with_gsaf as (
 select wpl.population, wpl.year as population_year, g.* from world_population_long wpl
-join gsaf_copy g
+left join gsaf_copy g
 on UPPER(wpl."Country Name") = UPPER(g."Country")
 and wpl.year = g."Year")
 

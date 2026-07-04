@@ -66,6 +66,7 @@ with decades as (
     select 
         "Country",
         ("Year"::INTEGER / 10) * 10 as decade,
+        ct_id,
         case when "Fatal Y/N" = 'Y' then 1.0 else 0.0 end as is_fatal
     from gsaf_copy
     where nullif("Country", '') is not null
@@ -88,7 +89,7 @@ normalized_for_population as (
         count(*) as attacks,
         round(p.avg_population_for_decade, 0) as population_density,
         -- Safely calculate metrics per million using NULLIF jic population data is missing
-        round(count(*) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million_people,
+        round(count(d.ct_id) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million_people,
         round(avg(d.is_fatal) * 100, 1) as fatality_rate
     from decades d
     join population_decades p 
@@ -184,14 +185,14 @@ country_decade_rates as (
     select 
         d.decade, 
         d."Country", 
-        count(*) as attacks,
-        round(count(*) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million
+        count(d.ct_id) as attacks,
+        round(count(d.ct_id) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million
     from decades d
     join population_decades p 
         on upper(trim(d."Country")) = upper(trim(p."Country")) 
         and d.decade = p.decade
     group by d.decade, d."Country", p.avg_population_for_decade
-    having count(*) >= 2
+    having count(d.ct_id) >= 2
 ),
 ranked as (
     select *, 

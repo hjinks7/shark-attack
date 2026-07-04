@@ -230,10 +230,10 @@ case
               and "Injury" ~* '^fatal'
             then 'Y'
 
-            when "Fatal Y/N" = 'Y'
-              and "Injury" ~* 'non[- ]*fatal'
+            when ("Fatal Y/N" = 'Y')
+              and ("Injury" ~* 'non[- ]*fatal'
 				or"Injury" ilike '%%no attack%%'
-                 or "Injury" ilike '%%no injury%%'
+                 or "Injury" ilike '%%no injury%%')
             then 'N'
 
             when nullif("Fatal Y/N", '') is null
