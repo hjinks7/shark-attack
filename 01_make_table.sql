@@ -207,3 +207,9 @@ cross join lateral (
         (2025, "2025")
 ) as v(year, population)
 where v.population is not null;
+
+\copy public.gsaf5 FROM 'csvs/GSAF5.csv' WITH (FORMAT csv, HEADER true);
+
+\copy public.country_codes FROM 'csvs/country_codes_sharkattack.csv' WITH (FORMAT csv, HEADER true);
+
+\copy public.world_population FROM 'csvs/World Bank population data.csv' WITH (FORMAT csv, HEADER true);
