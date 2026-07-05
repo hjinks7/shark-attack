@@ -31,7 +31,7 @@ CREATE TABLE public.gsaf5 (
 
 drop table if exists country_codes;
 create table public.country_codes (
-"SI. No" TEXT,
+"Sl. No" TEXT,
 "English short name (upper/lower case)" TEXT,
 "Link to ISO 3166-2 subdivision codes" TEXT,
 "Alpha-2 code" TEXT,
