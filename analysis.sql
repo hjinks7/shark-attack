@@ -86,7 +86,7 @@ GROUP BY "Species"
 HAVING COUNT(*) >= 10)
 
 select * from species_metrics where fatality_rate = 0 and attacks > 0
-and "Species" ~ '^[a-zA-Z]+ [sS]hark$'
+and "Species" ~ '^[a-zA-Z]+ [sS]hark$';
 
 -- attacks and fatality rate by country
 
@@ -256,9 +256,8 @@ order by decade desc;
 --  Which countries have experienced the largest increase in recorded attacks over the past 50 years, adjusting for population?
 
 with country_year as ( 
-    select "Country", decade 
-    from (select distinct "Country" FROM gsaf_copy)
-    cross join (select distinct ("Year"::INTEGER / 10) * 10 AS decade FROM gsaf_copy where nullif("Year"::TEXT, '') is not null) 
+   select distinct "Country" FROM gsaf_copy
+    cross join (select distinct ("Year"::INTEGER / 10) * 10 AS decade FROM gsaf_copy where nullif("Year"::TEXT, '') is not null)
 ), 
 bring_in_attacks as ( 
     select 
@@ -362,7 +361,7 @@ SELECT
         ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
     ) AS rolling_10yr_avg
 FROM fatality_rate_per_year
-order by "Year" desc
+order by "Year" desc;
 
 -- Which countries have unusually high fatality rates given their attack volume?
 with overall_fatality as (
