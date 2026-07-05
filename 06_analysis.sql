@@ -1,4 +1,4 @@
-
+g
 -- attacks and fatality rate by type of incident
 select type_quality_status,
 COUNT(*) as attacks,

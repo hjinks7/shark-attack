@@ -1,8 +1,5 @@
 call update_gsaf('gsaf5'::regclass);
 
-drop table if exists gsaf_copy cascade;
-select * into gsaf_copy from gsaf5;
-
 call update_case_number ('gsaf_copy'::regclass);
 call fix_country('gsaf_copy'::regclass);
 call fix_date ('gsaf_copy'::regclass);
