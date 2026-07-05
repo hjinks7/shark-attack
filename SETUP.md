@@ -54,8 +54,6 @@ Run:
 01_make_table.sql
 ```
 
-After running this script to create the tables, import the generated CSV files into those tables using DBeaver's CSV Import Wizard.
-
 ## Step 4: Initial Cleaning
 
 Run:
