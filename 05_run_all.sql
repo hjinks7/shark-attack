@@ -1,5 +1,15 @@
 call update_gsaf('gsaf5'::regclass);
 
+
+drop table if exists gsaf_copy cascade;
+select * into gsaf_copy from gsaf5;
+
+create or replace view population_merged_with_gsaf as (
+select wpl.population, wpl.year as population_year, g.* from world_population_long wpl
+left join gsaf_copy g
+on UPPER(wpl."Country Name") = UPPER(g."Country")
+and wpl.year = g."Year");
+
 call update_case_number ('gsaf_copy'::regclass);
 call fix_country('gsaf_copy'::regclass);
 call fix_date ('gsaf_copy'::regclass);

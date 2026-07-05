@@ -207,12 +207,3 @@ cross join lateral (
         (2025, "2025")
 ) as v(year, population)
 where v.population is not null;
-
-drop table if exists gsaf_copy cascade;
-select * into gsaf_copy from gsaf5;
-
-create or replace view population_merged_with_gsaf as (
-select wpl.population, wpl.year as population_year, g.* from world_population_long wpl
-left join gsaf_copy g
-on UPPER(wpl."Country Name") = UPPER(g."Country")
-and wpl.year = g."Year");
