@@ -323,7 +323,23 @@ with ranked as (
     select
         ct_id,
         ROW_NUMBER() over (
-            partition by "Date", "Location", "Name"
+            partition by "Date", "Location",
+  				case when name_quality_status in ('first_last', 'first_middle_last')
+                     then "Name"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Age"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Sex"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Injury"
+                     else null
+                end
             order by ct_id
         ) as rnk
     from %1$s

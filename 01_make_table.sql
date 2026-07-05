@@ -213,3 +213,4 @@ where v.population is not null;
 \copy public.country_codes FROM 'csvs/country_codes_sharkattack.csv' WITH (FORMAT csv, HEADER true);
 
 \copy public.world_population FROM 'csvs/World Bank population data.csv' WITH (FORMAT csv, HEADER true);
+
