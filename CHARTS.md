@@ -6,7 +6,7 @@ A time-series graph comparing raw high-frequency data for annual occurrence stat
 3. **Horizontal Axis:** Years
 4. **Vertical Axis:** Fatality rate as a percentage
 
-#### 💡 Key Findings
+#### Key Findings
 
 * **Global Macro Trends Over Time:** the rolling averages (orange line) show a century-long decline in shark encounter fatality rates - down from approximately **50%+ in the late 19th century to about 10%–13% in the current millennium.** The dataset alone cannot determine the cause of this decline. Possible contributors include improvements in emergency medical care, communication systems, and reporting practices.
 
@@ -21,7 +21,7 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 2. **Top X-axis (linear)** : fatality rate (%) (measures historical chance that an attack will be fatal)
 3. **Bottom Y-axis**: segmented country and decade cohorts (breaks down geography and time)
 
-#### 💡 Key Findings
+#### Key Findings
 
 * **The Large Exposure Due To The Small Denominator (left side):** small island nations such as Bermuda (1960), French Polynesia (2010), and New Caledonia (2000s & 2010s) completely dominate all categories of attack exposure per capita. Because each of these regions has extremely limited bases of population, when an incident occurs, even just a handful, it can scale exponentially and create a per million attack rate greater than 100 per million on the log scale.
 * **The High-Exposure/ Low-Lethality Paradox:** If you look at French Polynesia (2010) and New Caledonia (2000), both show very large exposure rates per capita, yet show 0% mortality from attacks. This indicates that the methods used to collect data in this region inflate the number of reported incidents but do not increase the real danger associated with being attacked by a shark. 
@@ -33,7 +33,7 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 2. **Vertical Axis:** Historic Fatality Rates (%)(Fatality rate per-attack) 
 3. **Size of Bubble:** Total Number of Recorded Attacks (Weighting sample-size)
 
-#### 💡 Key Findings
+#### Key Findings
 
 * **The Top Three "Apex" Groups:** Great White, Tiger, and Bull sharks cluster aggressively in the upper-left corner. All three have large recorded samples (bubble size), and all three have demonstrated fatality rates between 20%-25%. The results validate that these three are the most significant absolute statistical threats to humans. 
 * **Volume v. Lethality Diversion:** Although Great White Sharks were responsible for the greatest number of documented attacks historically (largest bubble diameter), each individual Tiger Shark has a statistically greater chance of killing a person during an interaction than each Great White Shark (slightly higher Y-value).
@@ -46,7 +46,7 @@ The horizontal bar graph compares the countries with the greatest growth in popu
 1. **Horizontal Axis:** Growth in population normalized shark incidents from the decade of 1970 to 2020
 2. **Vertical Axis**: Countries
 
-#### 💡 Key Findings
+#### Key Findings
 
 * **The South Pacific Acceleration Baseline**:
 French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of "28 to 36 attacks per million" during the 50 year time period. 
