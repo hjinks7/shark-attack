@@ -18,12 +18,12 @@ Run the project files in the following order:
 
 ```text
 GSAF_to_CSV.ipynb
-make table.sql
-update gsaf5.sql
-data quality scores.sql
-consolidate.sql
-run_all.sql
-analysis.sql
+01_make_table.sql
+02_update_gsaf.sql
+03_data_quality_scores.sql
+04_consolidate.sql
+05_run_all.sql
+06_analysis.sql
 ```
 
 ## Step 1: Convert Source Files to CSV
@@ -51,7 +51,7 @@ Then connect to the database in DBeaver.
 Run:
 
 ```text
-make table.sql
+01_make_table.sql
 ```
 
 After running this script to create the tables, import the generated CSV files into those tables using DBeaver's CSV Import Wizard.
@@ -61,7 +61,7 @@ After running this script to create the tables, import the generated CSV files i
 Run:
 
 ```text
-update gsaf5.sql
+02_update_gsaf.sql
 ```
 
 This performs the first round of cleaning and creates supporting fields that are used later for data quality assessment and downstream analysis across broad categorical 
@@ -71,7 +71,7 @@ This performs the first round of cleaning and creates supporting fields that are
 Run:
 
 ```text
-data quality scores.sql
+03_data_quality_scores.sql
 ```
 
 This creates the procedure used to score the dataset across data-quality dimensions like completeness, validity, consistency, and whether there are duplicates.
@@ -81,7 +81,7 @@ This creates the procedure used to score the dataset across data-quality dimensi
 Run:
 
 ```text
-consolidate.sql
+04_consolidate.sql
 ```
 
 This is where the primary data cleaning functions are created. The functions include all of the necessary rules to clean the various types of columns, such as:
@@ -100,7 +100,7 @@ This is where the primary data cleaning functions are created. The functions inc
 Run:
 
 ```text
-run_all.sql
+05_run_all.sql
 ```
 
 This executes the full cleaning and scoring process. It creates a cleaned copy of the raw GSAF table, applies the cleaning procedures to the copy, 
@@ -111,7 +111,7 @@ and calculates data quality scores for the untouched raw table and its transform
 Run:
 
 ```text
-analysis.sql
+06_analysis.sql
 ```
 
 This script contains the final analysis queries, including:
