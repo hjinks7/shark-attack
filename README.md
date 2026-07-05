@@ -12,7 +12,7 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 - **`01_make_table.sql`**: Set up the raw GSAF table; Create a "country" reference table; Import world bank population data in unpivot format (wide to long). 
 - **`02_update_gsaf.sql`**: First round of cleaning: parse date field into month/day format; Convert name-type-activity fields into quality-status bins to use later as scoring fields.
 - **`03_data_quality_scores.sql`**: Create a stored procedure to later quantify data-quality improvements across 24 different aspects (validity, completeness, consistency) into a `failures` table.
-- - **`04_consolidate.sql`**: Main cleaning functions: Standardize case number formats; Fix date issues; Match fuzzy-country-name (use levenshtein); Bucket free-text time fields; Resolve fatality flag with injury field text; Consolidate multiple species fields; Remove duplicate records; Standardize incident type fields.
+- **`04_consolidate.sql`**: Main cleaning functions: Standardize case number formats; Fix date issues; Match fuzzy-country-name (use levenshtein); Bucket free-text time fields; Resolve fatality flag with injury field text; Consolidate multiple species fields; Remove duplicate records; Standardize incident type fields.
 - **`05_run_all.sql`**: Run the entire process - Build → Clean → Score Before/After → Overall Quality Score.
 - **`06_analysis.sql`**: Fatality Rates By Activity/Species/Country; Population-Normalized Attack Rates; Geographic Concentration Over Time; Countries Deviating Most From Global Average Fatality Rate.
 
