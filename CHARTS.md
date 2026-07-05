@@ -8,11 +8,7 @@ A time-series graph comparing raw high-frequency data for annual occurrence stat
 
 #### 💡 Key Findings
 
-* **Global Macro Trends Over Time:** the rolling averages (orange line) show a century-long decline in shark encounter fatality rates - down from approximately **50%+ in the late 19th century to about 10%–13% in the current millennium.** These declines reflect improvements in human activity, including:
-  +   rapid coastal communication systems
-  +   emergency beach patrol services
-  +   helicopter evacuation systems
-  +   advances in traumatic injury treatment (rapid blood transfusion and antibiotics)
+* **Global Macro Trends Over Time:** the rolling averages (orange line) show a century-long decline in shark encounter fatality rates - down from approximately **50%+ in the late 19th century to about 10%–13% in the current millennium.** The dataset alone cannot determine the cause of this decline. Possible contributors include improvements in emergency medical care, communication systems, and reporting practices.
 
 * **Necessity of Smoothing Data:** due to the relatively small numbers of people involved in shark attacks each year, there is substantial random variation in annual attack fatality rates (blue line). Without some smoothing process, this randomness could be misinterpreted as evidence of an increase/decrease in attack risk at times when no such change had occurred (e.g., the mid-1940s or the early 1900s). Use of a rolling average has smoothed these variations to provide confirmation that while attack risk may vary randomly by year, the overall attack risk remains lower than in the past.
 * **Modern 2020s Upward Trend:** there appears to be a significant upward spike in both annual and rolled averages beginning in 2021 continuing into 2026. This presents an opportunity for additional exploratory research to identify why there was a shift upwards in reported fatalities, e.g. whether there are correlations between post-COVID pandemic increases in the number of remote, unmonitored water-based activities (including ecotourism/surfing), or whether this represents a shift in how fatalities are being reported.
