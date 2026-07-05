@@ -27,7 +27,7 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 
 ## Tools
 
-PostgreSQL (stored procedures, window functions, regex, `fuzzystrmatch` for fuzzy country matching). Pandas used to convert the original GSAF `.xlsx` to `.csv`. Charts built in Excel from query outputs.
+PostgreSQL (stored procedures, window functions, regex, `fuzzystrmatch` for fuzzy country matching). Pandas used to convert the original GSAF `.xls` to `.csv`. Charts built in Excel from query outputs.
 
 ## Known limitations / what I'd improve next
 
