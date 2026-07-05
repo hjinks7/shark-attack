@@ -91,7 +91,8 @@ LATERAL (
         (date_consistent),
         (date_complete),
         (injury_fatal_match)
-) AS v(score);
+) AS v(score)
+GROUP BY source_table;
 
 
 -- excluding scores for missing data like age or time
@@ -112,4 +113,5 @@ LATERAL (
         (date_valid),
         (date_consistent),
         (injury_fatal_match)
-) AS v(score);
+) AS v(score)
+GROUP BY source_table;

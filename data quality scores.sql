@@ -11,8 +11,8 @@ begin
 EXECUTE format ('SELECT COUNT(*) FROM %1$s', tbl)
 INTO total_rows;
 
-drop table if exists failures;
-create table failures (
+create table if not exists failures (
+source_table TEXT,
 case_number_valid Float,
 case_number_unique Float,
 case_number_complete Float,
@@ -39,12 +39,16 @@ injury_fatal_match float,
 no_duplicates float);
 
 EXECUTE format($sql$
-insert into failures (case_number_valid, case_number_unique, case_number_complete,
+insert into failures (source_table, case_number_valid, case_number_unique, case_number_complete,
 name_valid, activity_valid, type_valid, type_complete, fatal_valid, fatal_complete,
 age_complete, species_complete, species_valid, species_shark, country_upper, country_valid, time_valid,
 time_complete, year_valid, year_complete, date_valid, date_consistent, date_complete, 
 injury_fatal_match, no_duplicates)
 values(
+
+-- source table 
+%3$L,
+
 -- case number valid
 (select 1 - ROUND(COUNT(*) * 1.0 / %1$s, 4)
 from %2$s
@@ -245,6 +249,6 @@ WHERE dup_count > 1
 
 );
 
-$sql$, total_rows, tbl);
+$sql$, total_rows, tbl, tbl::TEXT);
 end;
 $$
