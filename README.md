@@ -4,6 +4,8 @@ An end-to-end PostgreSQL project to transform the Global Shark Attack File (GSAF
 
 The original data cleanliness score stood around 77%, while **my cleaned GSAF data stands at roughly 89%**. If you exclude values that aren't recoverable (the completeness of certain columns, i.e., "Name") from the average, the data cleanliness score goes **from roughly 76% to 96%**.
 
+*(Note: the cleaned GSAF file has 180 fewer rows than the original GSAF file - duplicates were removed, as well as rows where there was no shark involvement.)*
+
 I selected GSAF specifically because it has not been cleaned prior to delivery. The date fields, country fields, time fields, and species fields were all in unstructured, free-form text so I was required to create a pipeline of steps to accomplish cleaning instead of simply dropping nulls.
 
 ## What's in this project
