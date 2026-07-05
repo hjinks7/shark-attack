@@ -23,11 +23,10 @@ order by attacks desc;
 -- attacks and fatality rate by species
 
 with avg_pop as (
-    select "Country", avg(population) as avgpop
+    select "Country", round(avg(population),0) as avgpop
     from population_merged_with_gsaf
     group by "Country"
 ),
-
 species_country_totals as (
     select 
         g."Species",
@@ -71,7 +70,7 @@ from species_frequency f
 join species_fatality fa
     on f."Species" = fa."Species"
 where f.total_attacks >= 10
-order by f.attacks_per_million_pooled desc;
+order by f.total_attacks desc;
 
 
 -- non-fatal sharks
@@ -127,7 +126,7 @@ normalized_for_population as (
     select 
         d."Country",
         d.decade,
-        count(*) as attacks,
+        count(d.ct_id) as attacks,
         round(p.avg_population_for_decade, 0) as population_density,
         -- Safely calculate metrics per million using NULLIF jic population data is missing
         round(count(d.ct_id) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million_people,
