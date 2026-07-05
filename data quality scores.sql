@@ -142,7 +142,7 @@ or "Injury" ilike '%%no attack%%'
 (select 1 - ROUND(COUNT(*) * 1.0 / %1$s, 4)
 from %2$s
 where 
-"Species" ~* 'shark'
+"Species" !~* 'shark'
 ),
 
 -- country upper
