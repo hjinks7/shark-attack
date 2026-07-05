@@ -53,8 +53,7 @@ Run:
 make table.sql
 ```
 
-After creating the primary raw GSAF Table, country reference table, and population data structure that will be used in a future population-normalized analysis, 
-this script imports the transformed CSV files to the appropriate PostgreSQL tables via DBeaver's CSV import tool.
+After running this script to create the tables, import the generated CSV files into those tables using DBeaver's CSV Import Wizard.
 
 ## Step 4: Initial Cleaning
 
