@@ -1,33 +1,32 @@
-# shark-attack
-A completely end-to-end SQL project using the Global Shark Attack File (GSAF) - one of the messiest datasets you will ever come across spanning nearly two centuries - which takes a raw, unprocessed dataset and cleanses it into an analytics-ready result. Advanced SQL is used throughout the project (ctes, window functions, etc.) to provide a wealth of insight on the risks associated with shark attacks.
+# Shark Attack Data Cleaning & Analysis
 
-**The project has several files:**
+An end-to-end PostgreSQL project to transform the Global Shark Attack File (GSAF), which is a very messy, text-based data source containing almost two-hundred years worth of shark attacks, into a clean, analysis-ready format, including a customized scoring metric for data cleanliness, as well as several analytic results normalized by population.
 
-SQL script `make_table.SQL` — setup for all three tables needed to create the final database: raw GSAF table; country reference table; World Bank population data (unpivoted from wide to long format).
+I selected GSAF specifically because it has not been cleaned prior to delivery. The date fields, country fields, time fields, and species fields were all in unstructured, free-form text so I was required to create a pipeline of steps to accomplish cleaning instead of simply dropping nulls.
 
-SQL script `update_gsaf5.SQL` — initial cleaning pass; parses date field into month/day format. Classifies name field, type field & activity fields into quality-status bins which are used for scoring in the next script.
+## What's in this project
 
-SQL script `consolidate.SQL` — all core cleaning procedures: standardizes case numbers. Corrects dates. Fuzzy-matches country names (via levenshtein). Converts free-text times into binned values. Reconciles fatality flag w/ injury descriptions. Consolidates species names. Eliminates duplicate records. Standardizes incident types.
+- **`make_table.sql`**: Set up the raw GSAF table; Create a "country" reference table; Import world bank population data in unpivot format (wide to long). 
+- **`update_gsaf5.sql`**: First round of cleaning: parse date field into month/day format; Convert name-type-activity fields into quality-status bins to use later as scoring fields.
+- **`consolidate.sql`**: Main cleaning functions: Standardize case number formats; Fix date issues; Match fuzzy-country-name (use levenshtein); Bucket free-text time fields; Resolve fatality flag with injury field text; Consolidate multiple species fields; Remove duplicate records; Standardize incident type fields.
+- **`data_quality_scores.sql`**: Score all of the above across 24 different aspects (validity, completeness, consistency) into a `failures` table to measure the improvements to cleaning, not assumptions.
+- **`run_all.sql`**: Run the entire process - Build → Clean → Score Before/After → Overall Quality Score.
+- **`analysis.sql`**: Fatality Rates By Activity/Species/Country; Population-Normalized Attack Rates; Geographic Concentration Over Time; Countries Deviating Most From Global Average Fatality Rate.
 
-SQL script `data_quality_scores.SQL` — stored procedure scores dataset across 24 dimensions (validity, completeness, consistency). Outputs failures table, so improvements can be measured w/ cleanliness prior to vs. After cleaning process.
+## Headline findings
 
-SQL script `run_all.SQL` — orchestrates full pipeline: build tables → clean → score before/afters → compute overall data quality score.
+- **Great White, Tiger, and Bull Sharks have roughly the same ~20–25% fatality rates**, and they have sufficient sample sizes to provide reliable estimates. The Wobbegongs and Coppers, however, can swing wildly. They are not valid representatives of these species' fatality rates due to very low sample sizes.
+-  **Since 1916, there has been a substantial decline in the 10 year moving fatality rate**, which could likely be attributed to significant advances in emergency care and documentation since 1900's - though this study does not have the resources to identify the exact mechanisms behind this advancement, we would need much larger sample sizes than those available here before we could clearly establish a trend.
+- **Rates of attacks per capita paint an entirely different picture than simply looking at total numbers**. While many small nation states (Bermuda, French Polynesia & New Caledonia) have high per-capita and 50-year growth rates in terms of attack frequency, these are primarily examples of how a small denominator will cause an additional several attacks in each country to drastically increase the rate, and not indicative of an increased danger of being attacked while visiting.
+- **There are some countries with fatality rates well above the world average for meaningful volumes of attacks (>20 reported)**. These represent a stronger indicator of actual risk compared to the above per-capita island effect; because the high fatality rate cannot solely be accounted for by small sample size.
 
-SQL script `analysis.SQL` — analyzes cleansed data for various statistics: fatality rates by activity/species/country. Population-normalized attack rates. Geographic concentration over time. Countries with fatality rates that deviate most from global average.
+*(Chart-by-chart breakdowns with axis definitions and detailed findings are in [`CHARTS.md`](./CHARTS.md).)*
 
-**Headline findings**
+## Tools
 
-Most reported shark attacks were made by bull sharks, tiger sharks, and great white sharks. However, when you look at fatality rates they need to be viewed along with the fact that all three of those species also represent a huge number of attacks on record. Rates of fatalities are volatile and unreliable when a single species or country reports just a few attacks; e.g., Wobbegongs or Copperheads.
-The ten year rolling average of fatality rates have dramatically decreased from the early 1900s, and that can be attributed to advances in medical treatment and reporting; however, the annual fatality numbers are very erratic and that is precisely why we use a rolling average. 
-Rates of attacks per capita tell a vastly different story than just the total number of attacks. For example, small island nation states (Bermuda, French Polynesia, New Caledonia) report the most attacks per one million population members. This difference may be due to the "small denominator" effect as opposed to an indication that these places are significantly more hazardous than other locales. 
-There are some countries whose fatality rates exceed the world-wide average of fatality rates even if there are more than 20 documented attacks. That is likely a better indicator of how dangerous a particular locale is compared to the island effect of having a low population density.
+PostgreSQL (stored procedures, window functions, regex, `fuzzystrmatch` for fuzzy country matching). Pandas used to convert the original GSAF `.xlsx` to `.csv`. Charts built in Excel from query outputs.
 
-
-**Tools**
-
-Pandas to transform GSAF .xlsx file into a .csv. PostgreSQL (stored procedures, window functions, regex, fuzzystrmatch extension for fuzzy country matching). Charts built in Excel from query outputs.
-
-**Known limitations / what I'd improve next**
+## Known limitations / what I'd improve next
 
 * Year validation is too permissive - it currently only checks that "Year" is 4 digits, not that it's a plausible/real year, which lets a few clearly invalid years slip through into the trend charts.
 
