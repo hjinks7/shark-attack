@@ -49,8 +49,7 @@ and (
 
 $sql$, tbl);
 end;
-$$
-
+$$;
 -- fix date
 create or replace procedure fix_date(
 
@@ -71,12 +70,12 @@ then
 TO_CHAR(
 ("Year" || '.' || LPAD("Month"::TEXT, 2, '0') || '.' || LPAD("Day"::TEXT, 2, '0'))::date, 'DD Mon YYYY')
 else "Date"
-end
+end;
 
 $sql$, tbl );
 
 end;
-$$
+$$;
 
 -- fix country
 create or replace procedure fix_country(
@@ -129,7 +128,7 @@ where g.ct_id = m.ct_id;
 
 $sql$, tbl);
 end;
-$$
+$$;
 
 -- fix time
 
@@ -193,7 +192,7 @@ end;
 
 $sql$, tbl);
 end;
-$$
+$$;
 
 
 -- update fatal
@@ -244,7 +243,7 @@ case
 
 $sql$, tbl);
 end;
-$$
+$$;
 
 
 -- update species
@@ -304,7 +303,7 @@ end;
 
 $sql$, tbl);
 end;
-$$
+$$;
 
 -- delete duplicates
 
@@ -351,7 +350,7 @@ where g.ct_id = r.ct_id
 
 $sql$, tbl);
 end;
-$$
+$$;
 
 -- fix type
 
@@ -381,5 +380,6 @@ end;
 
 $sql$, tbl);
 end;
-$$
+$$;
+
 
