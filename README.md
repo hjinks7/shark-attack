@@ -1,5 +1,5 @@
 # shark-attack
-A completely end-to-end SQL project using the Global Shark Attack File (GSAF) - one of the messiest datasets you will ever come across spanning nearly two centuries - takes a raw, unprocessed dataset and cleanses it into an analytics-ready result. Advanced SQL is used throughout the project (ctes, window functions, etc.) to provide a wealth of insight on the risks associated with shark attacks.
+A completely end-to-end SQL project using the Global Shark Attack File (GSAF) - one of the messiest datasets you will ever come across spanning nearly two centuries - which takes a raw, unprocessed dataset and cleanses it into an analytics-ready result. Advanced SQL is used throughout the project (ctes, window functions, etc.) to provide a wealth of insight on the risks associated with shark attacks.
 
 The project has several files:
 
