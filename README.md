@@ -41,3 +41,5 @@ PostgreSQL (stored procedures, window functions, regex, `fuzzystrmatch` for fuzz
 * No automated tests; the quality scoring framework doubles as a sanity check but isn't a substitute for unit tests on the cleaning procedures.
 
 * Currently, the data-quality scripts overwrite the same logging tables; therefore, if you run both the clean-data and raw-log processes, they both write their results to the same logging-table, resulting in the raw-log results being overwritten by the clean-data results. Therefore, I would like to add a "run-id" field to allow for each process to be logged separately.
+
+(*To reproduce this project, see [`SETUP.md`](./SETUP.md).*)
