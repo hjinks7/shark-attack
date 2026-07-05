@@ -33,7 +33,7 @@ Open and run:
 GSAF_to_CSV.ipynb
 ```
 
-The above mentioned Jupyter notebook takes your original raw Excel file and country codes file, converting them to CSV format to allow you to load the files into PostgreSQL.
+The above mentioned Jupyter notebook takes the original raw Excel file and country codes file, converting them to CSV format to allow you to load the files into PostgreSQL.
 
 ## Step 2: Create the PostgreSQL Database
 
