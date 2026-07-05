@@ -38,14 +38,14 @@ create table public.country_codes (
 "Alpha-3 code" TEXT,
 "Numeric code" TEXT
 
-)
+);
 
 update country_codes
 set "English short name (upper/lower case)" = 
 case when "English short name (upper/lower case)" ilike '%iran%' then 'Iran'
 when "English short name (upper/lower case)" ilike '%iraq%' then 'Iraq'
 else "English short name (upper/lower case)"
-end
+end;
 
 
 -- world population data
