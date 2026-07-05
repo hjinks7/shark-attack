@@ -99,7 +99,7 @@ from gsaf_copy
 where "Country" is not null
 group by "Country" 
 having count(*) > 10
-order by attacks, fatality_rate desc;
+order by attacks desc, fatality_rate desc;
 
 -- attacks and fatality rate by country, adjusting for population size
 with decades as (
@@ -301,7 +301,7 @@ select
     (attacks - coalesce(prev_50_years_attacks, 0)) as fifty_year_change, 
     round(coalesce(
         (attacks - coalesce(prev_50_years_attacks, 0)) * 1000000 / nullif(avg_population_per_decade, 0), 
-        0, 4)
+        0), 4)
     ) as fifty_year_change_normalized_per_million 
 from final_population_merge 
 where decade = 2020 
