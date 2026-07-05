@@ -10,6 +10,7 @@ An exhaustive list of tools used during this project:
 * pandas 
 * DBeaver
 * Excel
+* fuzzystrmatch
 
 ## Recommended Run Sequence
 
