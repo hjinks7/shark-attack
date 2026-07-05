@@ -21,17 +21,58 @@ HAVING COUNT(*) >= 10
 order by attacks desc;
 
 -- attacks and fatality rate by species
-select "Species",
-COUNT(*) as attacks,
- ROUND(
-        AVG(CASE WHEN "Fatal Y/N" = 'Y' THEN 1 ELSE 0 END) * 100,
-        1
-    ) AS fatality_rate
-FROM gsaf_copy
-WHERE "Species" IS NOT NULL
-GROUP BY "Species"
-HAVING COUNT(*) >= 10
-order by attacks desc;
+
+with avg_pop as (
+    select "Country", avg(population) as avgpop
+    from population_merged_with_gsaf
+    group by "Country"
+),
+
+species_country_totals as (
+    select 
+        g."Species",
+        g."Country",
+        count(*) as attacks_in_country,
+        a.avgpop
+    from gsaf_copy g
+    join avg_pop a
+        on g."Country" = a."Country"
+    where g."Species" is not null
+    group by g."Species", g."Country", a.avgpop
+),
+
+species_frequency as (
+    select
+        "Species",
+        sum(attacks_in_country) as total_attacks,
+        round(
+            sum(attacks_in_country) * 1000000.0 / nullif(sum(avgpop), 0), 
+            3
+        ) as attacks_per_million_pooled
+    from species_country_totals
+    group by "Species"
+),
+
+species_fatality as (
+    select
+        "Species",
+        round(avg(case when "Fatal Y/N" = 'Y' then 1 else 0 end) * 100, 1) as fatality_rate
+    from gsaf_copy
+    where "Species" is not null
+    group by "Species"
+)
+
+select
+    f."Species",
+    f.total_attacks,
+    f.attacks_per_million_pooled,
+    fa.fatality_rate
+from species_frequency f
+join species_fatality fa
+    on f."Species" = fa."Species"
+where f.total_attacks >= 10
+order by f.attacks_per_million_pooled desc;
+
 
 -- non-fatal sharks
 with species_metrics as (select "Species",
@@ -334,7 +375,7 @@ where "Fatal Y/N" in ('Y', 'N')
 
 ),
 
-country_stats as (
+country_mets as (
 
 select
     "Country",
@@ -355,7 +396,7 @@ select
     c.fatal_attacks,
     round(c.fatality_rate * 100, 1) as fatality_rate,
     round((c.fatality_rate - o.overall_fatality_rate) * 100, 1) as percentage_points_above_overall
-from country_stats c
+from country_mets c
 cross join overall_fatality o
 where nullif("Country", '') is not null
 order by percentage_points_above_overall desc, attacks desc;
