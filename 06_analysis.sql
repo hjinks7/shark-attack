@@ -302,7 +302,7 @@ select
     round(coalesce(
         (attacks - coalesce(prev_50_years_attacks, 0)) * 1000000 / nullif(avg_population_per_decade, 0), 
         0), 4)
-    ) as fifty_year_change_normalized_per_million 
+    as fifty_year_change_normalized_per_million 
 from final_population_merge 
 where decade = 2020 
   and attacks > coalesce(prev_50_years_attacks, 0) 
