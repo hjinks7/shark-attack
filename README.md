@@ -1,6 +1,8 @@
 # Shark Attack Data Cleaning & Analysis
 
-An end-to-end PostgreSQL project to transform the Global Shark Attack File (GSAF), which is a very messy, text-based data source containing almost two-hundred years worth of shark attacks, into a clean, analysis-ready format, including a customized scoring metric for data cleanliness, as well as several analytic results normalized by population. The original data cleanliness score stood around 77%, while **my cleaned GSAF data stands at roughly 89%**. If you exclude values that aren't recoverable (the completeness of certain columns, i.e., "Name") from the average, the data cleaniness score goes **from roughly 80% to 96%**.
+An end-to-end PostgreSQL project to transform the Global Shark Attack File (GSAF), which is a very messy, text-based data source containing almost two-hundred years worth of shark attacks, into a clean, analysis-ready format, including a customized scoring metric for data cleanliness, as well as several analytic results normalized by population. 
+
+The original data cleanliness score stood around 77%, while **my cleaned GSAF data stands at roughly 89%**. If you exclude values that aren't recoverable (the completeness of certain columns, i.e., "Name") from the average, the data cleaniness score goes **from roughly 80% to 96%**.
 
 I selected GSAF specifically because it has not been cleaned prior to delivery. The date fields, country fields, time fields, and species fields were all in unstructured, free-form text so I was required to create a pipeline of steps to accomplish cleaning instead of simply dropping nulls.
 
