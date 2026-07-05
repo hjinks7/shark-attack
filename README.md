@@ -10,7 +10,7 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 
 - **`GSAF_to_CSV.ipynb`**: Transform the raw GSAF data, as well as the country codes data, from `.xls`/`.xlsx` to `.csv`
 - **`make_table.sql`**: Set up the raw GSAF table; Create a "country" reference table; Import world bank population data in unpivot format (wide to long). 
-- **`update_gsaf5.sql`**: First round of cleaning: parse date field into month/day format; Convert name-type-activity fields into quality-status bins to use later as scoring fields.
+- **`update gsaf5.sql`**: First round of cleaning: parse date field into month/day format; Convert name-type-activity fields into quality-status bins to use later as scoring fields.
 - **`consolidate.sql`**: Main cleaning functions: Standardize case number formats; Fix date issues; Match fuzzy-country-name (use levenshtein); Bucket free-text time fields; Resolve fatality flag with injury field text; Consolidate multiple species fields; Remove duplicate records; Standardize incident type fields.
 - **`data_quality_scores.sql`**: Score all of the above across 24 different aspects (validity, completeness, consistency) into a `failures` table to measure the improvements to cleaning, not assumptions.
 - **`run_all.sql`**: Run the entire process - Build → Clean → Score Before/After → Overall Quality Score.
