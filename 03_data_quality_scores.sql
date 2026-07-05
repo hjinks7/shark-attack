@@ -53,7 +53,7 @@ values(
 (select 1 - ROUND(COUNT(*) * 1.0 / %1$s, 4)
 from %2$s
 where ("Case Number" !~ '^[0-9]{4}.[0-9]{2}.[0-9]{2}')
-and (LEFT("Case Number", 4) != "Year"::TEXT
+or (LEFT("Case Number", 4) != "Year"::TEXT
 or SUBSTRING("Case Number", 6, 2) != LPAD ("Month"::TEXT, 2, '0')
 or SUBSTRING("Case Number", 9, 2) != LPAD("Day"::TEXT, 2, '0')
 or SUBSTRING("Case Number", 6, 2)::INTEGER not between 1 and 12

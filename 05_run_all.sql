@@ -24,6 +24,7 @@ call create_data_quality_scores('gsaf5'::regclass);
 
 select * from failures;
 
+
 -- overall score
 
 SELECT AVG(score) AS overall_score
