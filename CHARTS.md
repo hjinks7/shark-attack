@@ -47,7 +47,7 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 **Image `shift_in_global_risk.png`** - 
 The horizontal bar graph compares the countries with the greatest growth in population normalized shark incidents from 1970 to 2020 by averaging each decade's baseline decade averages for the 1970s compared to the modern decade averages of the 2020s.
 
-1. **Horizontal Axis:** Groth in population normalized shark incidents from the decade of 1970 to 2020
+1. **Horizontal Axis:** Growth in population normalized shark incidents from the decade of 1970 to 2020
 2. **Vertical Axis**: Countries
 
 #### 💡 Key Findings
