@@ -197,7 +197,7 @@ from rolling_fatality_rate
 )
 
 select decade, ROUND(avg_fatality_rate_decade * 100.0, 4) as avg_fatality_rate_decade,
-ROUND((avg_fatality_rate_decade - prev_decade_fatality_rate)/prev_decade_fatality_rate, 4) * 100.0 as ten_year_change_in_avg_fatality_rate
+ROUND((avg_fatality_rate_decade - prev_decade_fatality_rate)/prev_decade_fatality_rate, 4) * 100.0 as ten_year_pct_change_in_avg_fatality_rate
 from lagged
 where prev_decade_fatality_rate != 0
 and decade >=1800
