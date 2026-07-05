@@ -126,4 +126,4 @@ case
 
 $sql$, tbl);
 end;
-$$
+$$;
