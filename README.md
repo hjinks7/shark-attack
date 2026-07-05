@@ -18,8 +18,13 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 
 ## Headline findings
 
+![Shark Attack Frequency by Species](images/shark_attack_frequency_vs_fatality_rate.png)
 - **Great White, Tiger, and Bull Sharks have roughly the same ~20–25% fatality rates**, and they have sufficient sample sizes to provide reliable estimates. The Wobbegongs and Coppers, however, can swing wildly. They are not valid representatives of these species' fatality rates due to very low sample sizes.
+  
+![10 year rolling fatality rate](images/10_year_rolling_fatality_rate.png)
 -  **Since 1916, there has been a substantial decline in the 10 year moving fatality rate**, which could likely be attributed to significant advances in emergency care and documentation since the 1900s - though this study does not have the resources to identify the exact mechanisms behind this advancement, we would need much larger sample sizes than those available here before we could clearly establish a trend.
+
+![Per capita attack exposure](images/per_capita_attack_exposure.png)
 - **Rates of attacks per capita paint an entirely different picture than simply looking at total numbers**. While many small nation states (Bermuda, French Polynesia & New Caledonia) have high per-capita and 50-year growth rates in terms of attack frequency, these are primarily examples of how a small denominator will cause an additional several attacks in each country to drastically increase the rate, and not indicative of an increased danger of being attacked while visiting.
 - **There are some countries with fatality rates well above the world average for meaningful volumes of attacks (>20 reported)**. These represent a stronger indicator of actual risk compared to the above per-capita island effect; because the high fatality rate cannot solely be accounted for by small sample size.
 
