@@ -133,7 +133,7 @@ Approximate results:
 | Metric                     | Before Cleaning | After Cleaning |
 | -------------------------- | --------------: | -------------: |
 | Overall Data Quality Score |             76% |            89% |
-| Fixable Data Quality Score |             80% |            96% |
+| Fixable Data Quality Score |             77% |            96% |
 
 The final analysis outputs are used to produce the charts shown in the main README and explained in `CHARTS.md`.
 
