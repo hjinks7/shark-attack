@@ -50,7 +50,7 @@ The horizontal bar graph compares the countries with the greatest growth in popu
 
 * **The South Pacific Acceleration Baseline**:
 French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of 28 to 36 attacks per million during the 50-year time period. 
-This significant increase is indicative of localized trends — such as a huge spike in coastal eco-tourism; changes in local environmental regulations; or improvements in reporting incident tracking systems that have drastically improved the ability to track incidents within the region.
+This significant increase is potentially indicative of localized trends - such as a huge spike in coastal eco-tourism; changes in local environmental regulations; or improvements in reporting incident tracking systems that have drastically improved the ability to track incidents within the region.
 
 * **The Island Nation Grouping (The Small Denominator Effect)**:
 Small island nations and territories including the Maldives, Belize, Samoa, and Seychelles completely dominated the middle tier of the growth rankings having shown increases of 8 to 11 attacks per million.
