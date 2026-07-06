@@ -240,7 +240,22 @@ from (
             partition by
                 "Date",
 				"Location",
-				"Name")
+				case when name_quality_status in ('first_last', 'first_middle_last')
+                     then "Name"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Age"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Sex"
+                     else null
+                end,
+                case when name_quality_status not in ('first_last', 'first_middle_last')
+                     then "Injury"
+                     else null
+                end)
         as dup_count
     from %2$s)
 
