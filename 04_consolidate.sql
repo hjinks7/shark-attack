@@ -225,6 +225,8 @@ case
               and "Injury" ~* '^fatal'
             then 'Y'
 
+-- injury text is human-written after the fact and more reliable than a potentially stale flag
+
             when "Fatal Y/N" = 'N'
               and "Injury" ~* '^fatal'
             then 'Y'
