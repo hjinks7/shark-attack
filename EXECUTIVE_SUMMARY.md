@@ -23,5 +23,5 @@
 
 1. **Don't rank the risk of specific countries based on unadjusted rates of attacks per capita.** Instead use the adjusted (sample size corrected) or Bayesian-weighted rates to avoid distortions related to population size.
 2. **Allocate resources (e.g. patrols, netting, emergency responses, etc.) to locations with elevated adjusted risk, and not merely those with the highest raw number of reported attacks.**
-3. **Don't declare a surge in attacks during the 2020s until you have evidence thatt eliminates other possible causes.**
+3. **Don't declare a surge in attacks during the 2020s until you have evidence that eliminates other possible causes.**
 4. **When communicating public risk information, base statements on data pertaining to common species (Great White, Tiger, and Bull), and do not include data regarding rarer species.**
