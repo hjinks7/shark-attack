@@ -68,10 +68,13 @@ Heavily populated baselines such as Australia and New Zealand rank lower in this
 ![Bayesian-weighted Fatality Rates vs. Baseline](images/bayesian_weighted_fatality_rate_vs_baseline.png)
 
 **Image `bayesian_weighted_fatality_rate_vs_baseline`**
-The color scheme compares each country's Bayesian-weighted fatality rate - the fatality rate with (20 * 0.23) dummy fatal attacks and 20 dummy overall attacks, a healthy credibility threshold combined with the overall fatality rate of 23% - to the overall fatality rate across all countries.
+The color scheme compares each country's Bayesian-weighted fatality rate to the global average. To stabilize estimates for countries with few recorded attacks, each country's fatality rate was given an extra 4.6 (in other words, 23% of 20) dummy fatal attacks and 20 dummy overall attacks, a conservative prior combined with the global fatality rate of 23%.
 
 1. **Shades of Blue:** The darker the shade of blue, the more the individual country's Bayesian-weighted fatality rate exceeds the global average fatality rate of 23%.
 
 #### Key Findings
 
-* ** Coastal Danger **
+* **Coastal Danger:** Some countries and special administrative regions, including Mexico, the Philippines, Cuba, India, Croatia, Indonesia, Hong Kong, and Greece, exhibit significantly higher Bayesian-weighted fatality rates than the overall global average, each hovering 27 percentage points above. Because Bayesian weighting shrinks estimates based on small sample sizes toward the global average, these elevated values likely reflect consistently high observed fatality rates rather than artifacts of the data. These fatality rates may reflect differences in the types of species that live in each area, varying access to emergency medical services, or the remoteness of the attack location.
+
+* **Small Denominator Effect in Action:** While French Polynesia ranked at the top in terms of population-normalized shark attacks, the small island nation's Bayesian-weighted fatality rate sits 13 percentage points below the global average, demonstrating how per-capita attacks can seem high with small population figures despite relatively low fatality risk. 
+
