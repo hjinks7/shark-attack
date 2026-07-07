@@ -1,4 +1,4 @@
-# Shark Attack Risk Analysis — Executive Summary
+# Shark Attack Risk Analysis: Executive Summary
 
 **What I did:** Analyzed approximately 6000 reported shark incident over almost 2 century time span. Cleaned up an unorganized public dataset, normalized by population (to separate actual signal for risk vs. statistically generated noise).
 
