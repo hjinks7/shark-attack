@@ -15,6 +15,8 @@ A time-series graph comparing raw high-frequency data for annual occurrence stat
 * **Necessity of Smoothing Data:** due to the relatively small numbers of people involved in shark attacks each year, there is substantial random variation in annual attack fatality rates (blue line). Without some smoothing process, this randomness could be misinterpreted as evidence of an increase/decrease in attack risk at times when no such change had occurred (e.g., the mid-1940s or the early 1900s). Use of a rolling average has smoothed these variations to provide confirmation that while attack risk may vary randomly by year, the overall attack risk remains lower than in the past.
 * **Modern 2020s Upward Trend:** there appears to be a significant upward spike in both annual and rolled averages beginning in 2021 continuing into 2026. This presents an opportunity for additional exploratory research to identify why there was a shift upwards in reported fatalities, e.g. whether there are correlations between post-COVID pandemic increases in the number of remote, unmonitored water-based activities (including ecotourism/surfing), or whether this represents a shift in how fatalities are being reported.
 
+![Per capita attack exposure](images/per_capita_attack_exposure.png)
+
 **Image `per_capita_attack_exposure.png`** -
 This comparison shows how much people are exposed to sharks and how dangerous it has been for them over time by country.
 
@@ -43,6 +45,8 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 * **Volume v. Lethality Diversion:** Although Great White Sharks were responsible for the greatest number of documented attacks historically (largest bubble diameter), each individual Tiger Shark has a statistically greater chance of killing a person during an interaction than each Great White Shark (slightly higher Y-value).
 * **Revealing the "Denominator" Distortion:** A clear example of a distortion from small denominators can be seen when comparing the Copper shark and Wobbegong shark. The two are located very far to the right along the x-axis indicating an extremely high population-adjusted attack rate. However, both have extremely small bubble diameters indicating that the high rate is partially statistical noise. Since there are so few documented encounters, when normalized by local population density, they exhibit artificially inflated relative risks. 
 * **Benchmark for Baseline Safety**: Wobbegongs serve well as an anchor for safety metrics. Wobbegongs have an extremely high localized per-capita exposure rate (very high X-value), however, there is no historic evidence of fatalities resulting from Wobbegong interactions; therefore, this suggests that having many incidents in a particular area is not indicative of inherent danger.
+
+![Shift in Global Risk](/images/shift_in_global_risk.png)
 
 **Image `shift_in_global_risk.png`** - 
 The horizontal bar graph compares the countries with the greatest growth in population normalized shark incidents from 1970 to 2020 by averaging each decade's baseline decade averages for the 1970s compared to the modern decade averages of the 2020s.
