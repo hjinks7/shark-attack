@@ -1,6 +1,6 @@
 # Shark Attack Risk Analysis: Executive Summary
 
-**What I did:** Analyzed approximately 6000 reported shark incidents over almost 2 century time span. Cleaned up an unorganized public dataset, normalized by population (to separate actual signal for risk vs. statistically generated noise).
+**What I did:** Analyzed approximately 6000 reported shark incidents over an almost two century timespan. Cleaned up an unorganized public dataset, normalized by population (to separate actual risk signals vs. statistically generated noise).
 
 **Why it matters:** Headlines about shark attack statistics are often misleading. Small countries may appear as "high risk" due to their relatively low total population. Rarely encountered species will appear extremely risky simply based on limited encounters. The purpose of my research was to identify what is true and what is merely an artifact of the way the data has been collected.
 
