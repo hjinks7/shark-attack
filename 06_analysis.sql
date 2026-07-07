@@ -110,7 +110,7 @@ with decades as (
         case when "Fatal Y/N" = 'Y' then 1.0 else 0.0 end as is_fatal
     from gsaf_copy
     where nullif("Country", '') is not null
-      and "Year" is not null
+      and nullif("Year"::TEXT, '') is not null
       and "Fatal Y/N" in ('Y', 'N')
 ),
 population_decades as (
@@ -178,7 +178,7 @@ order by 2 desc;
 with decade_attack as (select *,
 ("Year"::INTEGER / 10)*10 as decade
 from gsaf_copy
-where "Year" is not null
+where nullif("Year"::TEXT, '') is not null
 and "Fatal Y/N" in ('Y', 'N')),
 
 rolling_fatality_rate as(
@@ -254,10 +254,9 @@ order by decade desc;
 
 
 --  Which countries have experienced the largest increase in recorded attacks over the past 50 years, adjusting for population?
-
 with country_year as ( 
-   select distinct "Country" FROM gsaf_copy
-    cross join (select distinct ("Year"::INTEGER / 10) * 10 AS decade FROM gsaf_copy where nullif("Year"::TEXT, '') is not null)
+   select distinct "Country", decade FROM gsaf_copy
+    cross join (select distinct ("Year"::INTEGER / 10) * 10 AS decade FROM gsaf_copy where "Year" is not null)
 ), 
 bring_in_attacks as ( 
     select 
@@ -269,7 +268,7 @@ bring_in_attacks as (
         on cy."Country" = g."Country" 
         and cy.decade = (g."Year"::INTEGER / 10) * 10 
     where cy."Country" != ''
-), 
+),
 country_groups as ( 
     select 
         "Country", 
@@ -337,31 +336,43 @@ where fatality_rate < prev_century_fatality_rate
 and century = 21
 order by change_in_fatality_rate asc;
 
-
 -- rolling 10-year average of fatality rate
-with fatality_rate_per_year AS(
-SELECT
-    "Year",
-    ROUND(
-        AVG(CASE WHEN "Fatal Y/N" = 'Y' THEN 1 ELSE 0 END) * 100,
-        1
-    ) AS fatality_rate
-FROM gsaf_copy
-WHERE nullif("Year"::TEXT, '') IS NOT NULL
-GROUP BY "Year"
-HAVING COUNT(*) >= 10
 
+WITH year_spine AS (
+    SELECT DISTINCT "Year"::INT AS year 
+    FROM gsaf_copy 
+    WHERE "Year" IS NOT NULL AND "Year"::TEXT ~ '^[0-9]{4}$'
+),
+fatality_rate_per_year AS (
+    SELECT 
+        ys.year,
+        -- Calculate the actual raw metrics per year, handling empty years as 0
+        COALESCE(COUNT(CASE WHEN g."Fatal Y/N" = 'Y' THEN 1 END), 0) AS fatal_attacks,
+        coalesce(COUNT(g.ct_id), 0) AS total_attacks
+    FROM year_spine ys
+    LEFT JOIN gsaf_copy g ON ys.year = g."Year"::INT
+    GROUP BY ys.year
 )
-
-SELECT
-    "Year",
-    fatality_rate,
-    AVG(fatality_rate) OVER (
-        ORDER BY "Year"
-        ROWS BETWEEN 9 PRECEDING AND CURRENT ROW
+SELECT 
+    year,
+    -- Calculate the exact global fatality rate for THIS specific year
+    ROUND(
+        (fatal_attacks * 100.0) / NULLIF(total_attacks, 0), 
+        1
+    ) AS yearly_fatality_rate,
+    
+    -- Calculate the rolling 10-year average using RANGE to protect against missing years
+    ROUND(
+        (SUM(fatal_attacks) OVER w_10yr * 100.0) / 
+        NULLIF(SUM(total_attacks) OVER w_10yr, 0), 
+        1
     ) AS rolling_10yr_avg
 FROM fatality_rate_per_year
-order by "Year" desc;
+WINDOW w_10yr AS (
+    ORDER BY year 
+    RANGE BETWEEN 9 PRECEDING AND CURRENT ROW
+)
+ORDER BY year DESC;
 
 -- Which countries have unusually high fatality rates given their attack volume?
 with overall_fatality as (
@@ -373,28 +384,54 @@ where "Fatal Y/N" in ('Y', 'N')
 
 ),
 
+
 country_mets as (
 
 select
     "Country",
     count(*) as attacks,
     sum(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as fatal_attacks,
-    avg(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as fatality_rate
+    ROUND(
+    ((SUM(CASE WHEN "Fatal Y/N" = 'Y' THEN 1.0 ELSE 0.0 END) + (20 * 0.23)) / (COUNT(*) + 20)), 
+    1
+) AS weighted_fatality_rate
 from gsaf_copy
 where "Country" is not null
 and "Fatal Y/N" in ('Y', 'N')
 group by "Country"
 having count(*) >= 20
 
+),
+
+population_country as (
+select "Country",
+avg(population) as avg_pop
+from population_merged_with_gsaf
+group by "Country"
+),
+
+population_normalized_per_million as(
+
+select cm."Country",
+attacks,
+weighted_fatality_rate,
+attacks * 1000000 / nullif(avg_pop , 0) as attacks_per_million,
+fatal_attacks * 1000000 / nullif(avg_pop, 0) as fatal_attacks_per_million
+from population_country p
+join country_mets cm
+on 
+p."Country" = cm."Country"
+
 )
 
 select
-    c."Country",
-    c.attacks,
-    c.fatal_attacks,
-    round(c.fatality_rate * 100, 1) as fatality_rate,
-    round((c.fatality_rate - o.overall_fatality_rate) * 100, 1) as percentage_points_above_overall
-from country_mets c
+    p."Country",
+   	p.attacks,
+   	round(p.attacks_per_million, 2) as attacks_per_million,
+    round(p.fatal_attacks_per_million, 2) as fatal_attacks_per_million,
+    round(p.weighted_fatality_rate * 100.0, 4) as fatality_rate_normalized,
+    round((p.weighted_fatality_rate - o.overall_fatality_rate) * 100, 1) as percentage_points_above_overall
+from population_normalized_per_million p
 cross join overall_fatality o
 where nullif("Country", '') is not null
 order by percentage_points_above_overall desc, attacks desc;
