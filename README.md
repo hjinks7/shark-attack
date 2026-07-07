@@ -33,6 +33,7 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 - **There are some countries with Bayesian-weighted fatality rates well above the world average**. These represent a stronger indicator of actual risk compared to the above per-capita island effect, because the Baysesian-weighted high fatality rate cannot be accounted for by small sample size.
 
 *(Chart-by-chart breakdowns with axis definitions and detailed findings are in [`CHARTS.md`](./CHARTS.md).)*
+
 *(Actionable insights based on these findings can be found in [`EXECUTIVE_SUMMARY.md`](./EXECUTIVE_SUMMARY.md).)*
 
 ## Tools
