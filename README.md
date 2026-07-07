@@ -30,7 +30,7 @@ I selected GSAF specifically because it has not been cleaned prior to delivery. 
 - **Rates of attacks per capita paint an entirely different picture than simply looking at total numbers**. While many small nation states (Bermuda, French Polynesia & New Caledonia) have high per-capita and 50-year growth rates in terms of attack frequency, these are primarily examples of how a small denominator will cause an additional several attacks in each country to drastically increase the rate, and not indicative of an increased danger of being attacked while visiting.
 
 ![Bayesian-weighted Fatality Rates vs. Baseline](images/bayesian_weighted_fatality_rate_vs_baseline.png)
-- **There are some countries with fatality rates well above the world average for meaningful volumes of attacks (>20 reported)**. These represent a stronger indicator of actual risk compared to the above per-capita island effect, because the Baysesian-weighted high fatality rate cannot be accounted for by small sample size.
+- **There are some countries with Bayesian-weighted fatality rates well above the world average**. These represent a stronger indicator of actual risk compared to the above per-capita island effect, because the Baysesian-weighted high fatality rate cannot be accounted for by small sample size.
 
 *(Chart-by-chart breakdowns with axis definitions and detailed findings are in [`CHARTS.md`](./CHARTS.md).)*
 
