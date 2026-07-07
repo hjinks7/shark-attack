@@ -384,13 +384,13 @@ where "Fatal Y/N" in ('Y', 'N')
 
 ),
 
-
 country_mets as (
 
 select
     "Country",
     count(*) as attacks,
     sum(case when "Fatal Y/N" = 'Y' then 1 else 0 end) as fatal_attacks,
+    -- 23% is overall fatality rate, 20 is a healthy credibility threshold
     ROUND(
     ((SUM(CASE WHEN "Fatal Y/N" = 'Y' THEN 1.0 ELSE 0.0 END) + (20 * 0.23)) / (COUNT(*) + 20)), 
     1
@@ -399,7 +399,6 @@ from gsaf_copy
 where "Country" is not null
 and "Fatal Y/N" in ('Y', 'N')
 group by "Country"
-having count(*) >= 20
 
 ),
 
