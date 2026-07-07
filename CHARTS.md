@@ -28,6 +28,8 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 * **The "Real Risk" Anomalies:** New Caledonia (2020) and Papua New Guinea (1960) represent an anomaly to the paradox described above. Both exhibit extremely high per-capita attack rates, which are also linked to high local mortality rates (between 40% to 50%). These conditions potentially suggest unique environmental dangers or acute baseline delay times in providing medical attention during those respective years. 
 * **Continental Micro-Risks (right side):** Heavyweight locations for shark-related incidents (Australia, New Zealand) are shown on the far right side of the graph. Since their large numbers of people absorb the metric, their attack rates appear to be lower on the bottom x-axis. However, their highly volatile, spiking orange fatality line proves that while your probability of encountering a shark there per-capita is low, the severity of any resulting injury remains erratic across many years.
 
+![Shark Attack Frequency by Species](images/shark_attack_frequency_vs_fatality_rate.png)
+
 **Image `shark_attack_frequency_vs_fatality_rate.png`** - 
 1. **Horizontal Axis:** Attacks Per Million Pooled (Normalizes regional populations at-risk) 
 2. **Vertical Axis:** Historic Fatality Rates (%)(Fatality rate per-attack) 
