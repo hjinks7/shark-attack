@@ -44,7 +44,7 @@ This comparison shows how much people are exposed to sharks and how dangerous it
 * **The Top Three "Apex" Groups:** Great White, Tiger, and Bull sharks cluster aggressively in the upper-left corner. All three have large recorded samples (bubble size), and all three have demonstrated fatality rates between 20%-25%. The results suggest that these three are the most significant absolute statistical threats to humans. 
 * **Volume v. Lethality Diversion:** Although Great White Sharks were responsible for the greatest number of documented attacks historically (largest bubble diameter), each individual Tiger Shark has a statistically greater chance of killing a person during an interaction than each Great White Shark (slightly higher Y-value).
 * **Revealing the "Denominator" Distortion:** A clear example of a distortion from small denominators can be seen when comparing the Copper shark and Wobbegong shark. The two are located very far to the right along the x-axis indicating an extremely high population-adjusted attack rate. However, both have extremely small bubble diameters indicating that the high rate is partially statistical noise. Since there are so few documented encounters, when normalized by local population density, they exhibit artificially inflated relative risks. 
-* **Benchmark for Baseline Safety**: Wobbegongs serve well as an anchor for safety metrics. Wobbegongs have an extremely high localized per-capita exposure rate (very high X-value), however, there is no historic evidence of fatalities resulting from Wobbegong interactions; therefore, this suggests that having many incidents in a particular area is not indicative of inherent danger.
+* **Benchmark for Baseline Safety:** Wobbegongs serve well as an anchor for safety metrics. Wobbegongs have an extremely high localized per-capita exposure rate (very high X-value), however, there is no historic evidence of fatalities resulting from Wobbegong interactions; therefore, this suggests that having many incidents in a particular area is not indicative of inherent danger.
 
 ![Shift in Global Risk](/images/shift_in_global_risk.png)
 
@@ -56,18 +56,22 @@ The horizontal bar graph compares the countries with the greatest growth in popu
 
 #### Key Findings
 
-* **The South Pacific Acceleration Baseline**:
-French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of 28 to 36 attacks per million during the 50-year time period.
+* **The South Pacific Acceleration Baseline:**
+French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of 28 to 36 attacks per million during the 50-year time period. This significant increase is potentially indicative of localized trends - such as a huge spike in coastal eco-tourism; changes in local environmental regulations; or improvements in reporting incident tracking systems that have drastically improved the ability to track incidents within the region.
 
-This significant increase is potentially indicative of localized trends - such as a huge spike in coastal eco-tourism; changes in local environmental regulations; or improvements in reporting incident tracking systems that have drastically improved the ability to track incidents within the region.
-
-* **The Island Nation Grouping (The Small Denominator Effect)**:
+* **The Island Nation Grouping (The Small Denominator Effect):**
 Small island nations and territories including the Maldives, Belize, Samoa, and Seychelles completely dominated the middle tier of the growth rankings having shown increases of 8 to 11 attacks per million. While it may seem alarming, when viewed through a lens of per-capita growth rates based upon small baseline populations, this creates a skewed view due to a "small denominator effect"; i.e., even a single digit increase in raw encounters over a decade can be artificially inflated into a high per capita growth rate because small island nations' total population base is relatively small.
 
-* **Continental Micro-Shifts vs. Macro Mass**:
+* **Continental Micro-Shifts vs. Macro Mass:**
 Heavily populated baselines such as Australia and New Zealand rank lower in this specific growth ranking having demonstrated population-normalized growth rates of less than 3 per million. Because both Australia and New Zealand have enormous, rapidly increasing populations, they dilute their population-normalized growth rate. Although absolute numbers of shark incidents would likely show notable increases in either country over the course of the past 50 years, the population-normalized metric remains both very low and stable.
 
 ![Bayesian-weighted Fatality Rates vs. Baseline](images/bayesian_weighted_fatality_rate_vs_baseline.png)
 
 **Image `bayesian_weighted_fatality_rate_vs_baseline`**
-...
+The color scheme compares each country's Bayesian-weighted fatality rate - the fatality rate with (20 * 0.23) dummy fatal attacks and 20 dummy overall attacks, a healthy credibility threshold combined with the overall fatality rate of 23% - to the overall fatality rate across all countries.
+
+1. **Shades of Blue:** The darker the shade of blue, the more the individual country's Bayesian-weighted fatality rate exceeds the global average fatality rate of 23%.
+
+#### Key Findings
+
+* ** Coastal Danger **
