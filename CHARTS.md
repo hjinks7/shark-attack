@@ -1,3 +1,5 @@
+![10 year rolling fatality rate](images/10_year_rolling_fatality_rate.png)
+
 **Image `10_year_rolling_fatality_rate.png`** - 
 A time-series graph comparing raw high-frequency data for annual occurrence statistics with a trailing 10-year rolling average has been created to allow separating of historical patterns over time from year-to-year variation.
 
