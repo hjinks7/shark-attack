@@ -61,5 +61,7 @@ Small island nations and territories including the Maldives, Belize, Samoa, and 
 * **Continental Micro-Shifts vs. Macro Mass**:
 Heavily populated baselines such as Australia and New Zealand rank lower in this specific growth ranking having demonstrated population-normalized growth rates of less than 3 per million. Because both Australia and New Zealand have enormous, rapidly increasing populations, they dilute their population-normalized growth rate. Although absolute numbers of shark incidents would likely show notable increases in either country over the course of the past 50 years, the population-normalized metric remains both very low and stable.
 
+![Bayesian-weighted Fatality Rates vs. Baseline](images/bayesian_weighted_fatality_rate_vs_baseline.png)
+
 **Image `bayesian_weighted_fatality_rate_vs_baseline`**
 ...
