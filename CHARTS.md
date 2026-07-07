@@ -49,14 +49,20 @@ The horizontal bar graph compares the countries with the greatest growth in popu
 #### Key Findings
 
 * **The South Pacific Acceleration Baseline**:
-French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of 28 to 36 attacks per million during the 50-year time period. 
+French Polynesia and New Caledonia are at the top of all global locations having experienced an increase of 28 to 36 attacks per million during the 50-year time period.
+
 This significant increase is potentially indicative of localized trends - such as a huge spike in coastal eco-tourism; changes in local environmental regulations; or improvements in reporting incident tracking systems that have drastically improved the ability to track incidents within the region.
 
 * **The Island Nation Grouping (The Small Denominator Effect)**:
 Small island nations and territories including the Maldives, Belize, Samoa, and Seychelles completely dominated the middle tier of the growth rankings having shown increases of 8 to 11 attacks per million.
+
 While it may seem alarming, when viewed through a lens of per-capita growth rates based upon small baseline populations, this creates a skewed view due to a "small denominator effect"; i.e., even a single digit increase in raw encounters over a decade can be artificially inflated into a high per capita growth rate because small island nations' total population base is relatively small.
 
 * **Continental Micro-Shifts vs. Macro Mass**:
-Heavily populated baselines such as Australia and New Zealand rank lower in this specific growth ranking having demonstrated population-normalized growth rates of less than 3 per million. 
+Heavily populated baselines such as Australia and New Zealand rank lower in this specific growth ranking having demonstrated population-normalized growth rates of less than 3 per million.
+
 Because both Australia and New Zealand have enormous, rapidly increasing populations, they dilute their population-normalized growth rate. 
 Although absolute numbers of shark incidents would likely show notable increases in either country over the course of the past 50 years, the population-normalized metric remains both very low and stable.
+
+**Image `bayesian_weighted_fatality_rate_vs_baseline`**
+...
