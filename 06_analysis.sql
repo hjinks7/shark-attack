@@ -203,54 +203,75 @@ where prev_decade_fatality_rate != 0
 and decade >=1800
 order by decade desc;
 
--- Have shark attacks become more geographically concentrated or more dispersed over time?
+-- Have shark attacks become more geographically concentrated or more dispersed over time, adjusting for population?
 with decades as (
-    select *, 
-        ("Year"::integer / 10) * 10 as decade 
-    from gsaf_copy 
-    where "Year" is not null 
-      and nullif(trim("Country"), '') is not null
-      and "Year" >= 1800
+select *,
+("Year" / 10) * 10 as decade
+from gsaf_copy
+where "Year" is not null
+and nullif(trim("Country"), '') is not null
+and "Year" >= 1800
+
+
 ),
+
 population_decades as (
-    select 
-        "Country",
-        (population_year::integer / 10) * 10 as decade,
-        avg(population) as avg_population_for_decade
-    from population_merged_with_gsaf
-    where population is not null and population > 0
-    group by 1, 2
+select "Country",
+(population_year / 10) * 10 as decade,
+round(avg(population), 0) as avg_population
+from population_merged_with_gsaf
+where "Country" is not null
+group by 1, 2
 ),
-country_decade_rates as (
-    select 
-        d.decade, 
-        d."Country", 
-        count(d.ct_id) as attacks,
-        round(count(d.ct_id) * 1000000.0 / nullif(p.avg_population_for_decade, 0), 3) as attacks_per_million
-    from decades d
-    join population_decades p 
-        on upper(trim(d."Country")) = upper(trim(p."Country")) 
-        and d.decade = p.decade
-    group by d.decade, d."Country", p.avg_population_for_decade
-    having count(d.ct_id) >= 2
+
+country_rates as (
+select d."Country",
+d.decade,
+count(*) as attacks_per_country_per_decade,
+round(count(*) * 1000000 / nullif(avg_population, 0), 2) as attacks_per_million_normalized
+from decades d
+inner join population_decades pd
+on upper(trim(d."Country")) = upper(trim(pd."Country"))
+and d.decade = pd.decade
+group by d."Country", d.decade, avg_population
+
 ),
+
 ranked as (
-    select *, 
-        sum(attacks_per_million) over (partition by decade) as total_attacks_rate_pool, 
-        rank() over ( 
-            partition by decade 
-            order by attacks_per_million desc 
-        ) as country_rank 
-    from country_decade_rates
+-- this is where we partition by decade to look across all countries
+select *,
+sum(attacks_per_million_normalized) over (partition by decade) as total_attacks_rate_pool_all_countries_per_decade,
+rank() over (partition by decade order by attacks_per_million_normalized desc) as country_rank
+from country_rates
+),
+
+country_share as (
+select
+decade,
+round(max(case when country_rank = 1 then attacks_per_million_normalized * 100.0 / total_attacks_rate_pool_all_countries_per_decade end), 2) 
+as top_1_country_share,
+round(sum(case when country_rank <= 3 then attacks_per_million_normalized else 0 end) * 100.0
+/ max(total_attacks_rate_pool_all_countries_per_decade), 2)
+as top_3_countries_share
+from ranked
+group by 1
+
+),
+
+lagged as(
+
+select
+*,
+lag(top_1_country_share) over (order by decade) as prev_decade_top_1_share,
+lag(top_3_countries_share) over (order by decade) as prev_decade_top_3_share
+from country_share
+
 )
-select 
-    decade, 
-    count(*) as countries_with_tracked_rates, 
-    round(max(case when country_rank = 1 then attacks_per_million * 100.0 / total_attacks_rate_pool end), 2) as top_1_country_share, 
-    round(sum(case when country_rank <= 3 then attacks_per_million else 0 end) * 100.0 / max(total_attacks_rate_pool), 2) as top_3_country_share 
-from ranked 
-group by decade 
-order by decade desc;
+
+select decade, top_1_country_share, top_3_countries_share,
+round((top_1_country_share - prev_decade_top_1_share ) * 100.0/ prev_decade_top_1_share, 2) as pct_change_top_1,
+round((top_3_countries_share - prev_decade_top_3_share ) * 100.0/ prev_decade_top_3_share, 2) as pct_change_top_3
+from lagged;
 
 
 --  Which countries have experienced the largest increase in recorded attacks over the past 50 years, adjusting for population?
@@ -282,30 +303,46 @@ lagged as (
         lag(attacks, 5) over (partition by "Country" order by decade) as prev_50_years_attacks 
     from country_groups
 ),
-final_population_merge as (
-    select 
-        l.*,
-        (
-            select round(avg(population), 0) 
-            from population_merged_with_gsaf p 
-            where upper(trim(p."Country")) = upper(trim(l."Country")) 
-              and (p."Year"::INTEGER / 10) * 10 = l.decade
-        ) as avg_population_per_decade
-    from lagged l
+population_decades as (
+select "Country", (population_year::INTEGER/10) *10 as decade,
+avg(population) as avg_population_per_country_per_decade
+from population_merged_with_gsaf
+group by 1, 2
+
+
+),
+population_normalization as (
+select c.*, round(p.avg_population_per_country_per_decade, 0) as avg_pop,
+lag(avg_population_per_country_per_decade, 5) over (partition by p."Country" order by p.decade) as prev_50_years_pop
+from lagged c
+left join population_decades p
+on UPPER(c."Country") = UPPER(p."Country")
+and c.decade = p.decade
+
 )
+
+-- final_population_merge as (
+ --   select 
+--        l.*,
+--        (
+--            select round(avg(population), 0) 
+--            from population_merged_with_gsaf p 
+--            where upper(trim(p."Country")) = upper(trim(l."Country")) 
+--              and (p."Year"::INTEGER / 10) * 10 = l.decade
+--        ) as avg_population_per_decade
+--    from lagged l
+--)
 select 
     "Country", 
-    attacks as attacks_2020s,
-    coalesce(prev_50_years_attacks, 0) as attacks_1970s,
-    (attacks - coalesce(prev_50_years_attacks, 0)) as fifty_year_change, 
-    round(coalesce(
-        (attacks - coalesce(prev_50_years_attacks, 0)) * 1000000 / nullif(avg_population_per_decade, 0), 
-        0), 4)
-    as fifty_year_change_normalized_per_million 
-from final_population_merge 
+   round( attacks * 1000000 / avg_pop, 2) as attacks_2020s_normalized,
+    round(coalesce(prev_50_years_attacks, 0) * 1000000 / prev_50_years_pop, 2) as attacks_1970s_normalized,
+    round((attacks * 1000000 / avg_pop) -  (coalesce(prev_50_years_attacks, 0) * 1000000 / prev_50_years_pop), 2) as fifty_year_change 
+from population_normalization
 where decade = 2020 
-  and attacks > coalesce(prev_50_years_attacks, 0) 
-order by fifty_year_change_normalized_per_million desc;
+and attacks > prev_50_years_attacks
+and avg_pop != 0
+and prev_50_years_pop != 0
+order by fifty_year_change desc;
 
 -- Which activities have experienced the greatest decline in fatality rate over the past century?
 
